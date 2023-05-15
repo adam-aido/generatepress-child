@@ -56,7 +56,7 @@ function adamant_loginlogo_url($url)
  */
 add_action( 'phpmailer_init', 'adamant_mailer' );
 function adamant_mailer( $phpmailer ) {
-	if(isset(SMTP_HOST)) {
+	if(defined('SMTP_HOST')) {
 		$phpmailer->isSMTP();
 		$phpmailer->Host = SMTP_HOST;
 		$phpmailer->SMTPAuth = SMTP_AUTH;
