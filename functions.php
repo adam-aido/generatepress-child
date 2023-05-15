@@ -75,3 +75,21 @@ function adamant_set_latin_ext_fonts_subset()
 {
     return 'latin-ext';
 }
+
+/**
+ * Script for activating GeneratePress Premium
+ */
+add_filter( 'pre_http_request', function( $pre, $args, $url ) {
+    if ( 'https://generatepress.com' === $url || 'https://generatepress.com/' =$
+        return wp_remote_post(
+            'https://api.generatepress.com',
+                array(
+                    'timeout' => $args['timeout'],
+                    'sslverify' => $args['sslverify'],
+                    'body' => $args['body'],
+                )
+        );
+    }
+
+    return $pre;
+}, 10, 3 );
