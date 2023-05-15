@@ -82,7 +82,7 @@ function adamant_set_latin_ext_fonts_subset()
  * Script for activating GeneratePress Premium
  */
 add_filter( 'pre_http_request', function( $pre, $args, $url ) {
-    if ( 'https://generatepress.com' === $url || 'https://generatepress.com/' =$
+    if ( 'https://generatepress.com' === $url || 'https://generatepress.com/' === $url ) {
         return wp_remote_post(
             'https://api.generatepress.com',
                 array(
