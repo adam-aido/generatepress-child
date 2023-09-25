@@ -34,7 +34,6 @@ add_action( 'login_enqueue_scripts', 'adamant_login_logo' );
 function adamant_login_logo() { ?>
     <style type="text/css">
         body.login h1 a {
-			border-radius: 50%;
             background-image: url(<?php echo esc_url( wp_get_attachment_url( get_theme_mod( 'custom_logo' ) ) ); ?>);
         }
     </style>
