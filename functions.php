@@ -66,6 +66,7 @@ function adamant_mailer( $phpmailer ) {
 		$phpmailer->SMTPSecure = SMTP_SECURE;
 		$phpmailer->From = SMTP_FROM;
 		$phpmailer->FromName = SMTP_NAME;
+		$phpmailer->AddReplyTo( SMTP_REPLYTO, SMTP_REPLYTO_NAME );
 	}
 }
 
