@@ -51,23 +51,55 @@ function adamant_loginlogo_url($url)
 
 
 /**
- * Set PHP Mailer to use SMTP with credentials provided in wp-config.php
+ * Configure WordPress to use SMTP for sending emails
  */
 add_action( 'phpmailer_init', 'adamant_mailer' );
 function adamant_mailer( $phpmailer ) {
-	if(defined('SMTP_HOST')) {
-		$phpmailer->isSMTP();
-		$phpmailer->Host = SMTP_HOST;
-		$phpmailer->SMTPAuth = SMTP_AUTH;
-		$phpmailer->Port = SMTP_PORT;
-		$phpmailer->Username = SMTP_USER;
-		$phpmailer->Password = SMTP_PASS;
-		$phpmailer->SMTPSecure = SMTP_SECURE;
-		$phpmailer->From = SMTP_FROM;
-		$phpmailer->FromName = SMTP_NAME;
-		$phpmailer->AddReplyTo( SMTP_REPLYTO, SMTP_REPLYTO_NAME );
-	}
+    if ( ! defined( 'SMTP_HOST' ) || empty( SMTP_HOST ) ) {
+        return;
+    }
+
+    $phpmailer->isSMTP();
+    $phpmailer->Host       = SMTP_HOST;
+    $phpmailer->Port       = defined( 'SMTP_PORT' ) ? SMTP_PORT : 587;
+    $phpmailer->SMTPSecure = defined( 'SMTP_SECURE' ) ? SMTP_SECURE : 'tls';
+
+    if ( defined( 'SMTP_AUTH' ) && SMTP_AUTH ) {
+        $phpmailer->SMTPAuth = true;
+        $phpmailer->Username = defined( 'SMTP_USER' ) ? SMTP_USER : '';
+        $phpmailer->Password = defined( 'SMTP_PASS' ) ? SMTP_PASS : '';
+    }
+
+    if ( defined( 'SMTP_REPLYTO' ) && SMTP_REPLYTO ) {
+        $phpmailer->addReplyTo(
+            SMTP_REPLYTO,
+            defined( 'SMTP_REPLYTO_NAME' ) ? SMTP_REPLYTO_NAME : ''
+        );
+    }
 }
+
+/**
+ * Set the From email address
+ */
+add_filter( 'wp_mail_from', 'adamant_mail_from' );
+function adamant_mail_from( $from ) {
+    if ( defined( 'SMTP_FROM' ) && SMTP_FROM ) {
+        return SMTP_FROM;
+    }
+    return $from;
+}
+
+/**
+ * Set the From name
+ */
+add_filter( 'wp_mail_from_name', 'adamant_mail_from_name' );
+function adamant_mail_from_name( $name ) {
+    if ( defined( 'SMTP_NAME' ) && SMTP_NAME ) {
+        return SMTP_NAME;
+    }
+    return $name;
+}
+
 
 /**
  * Set GeneratePress to use latin-ext subset for Google Fonts
