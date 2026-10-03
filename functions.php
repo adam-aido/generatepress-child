@@ -7,18 +7,11 @@
  * @package generatepress-child
  */
 
-/*
-include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-if ( is_plugin_active( 'woocommerce/woocommerce.php') ) {
-  // TODO: import file with WooCommerce specific snipets
-}
-*/
-
 /**
  * Enqueue scripts and styles.
  */
-add_action( 'wp_enqueue_scripts', 'adamant_parent_theme_enqueue_styles' );
-function adamant_parent_theme_enqueue_styles() {
+add_action( 'wp_enqueue_scripts', 'webartisan_parent_theme_enqueue_styles' );
+function webartisan_parent_theme_enqueue_styles() {
 	wp_enqueue_style( 'generatepress-style', get_template_directory_uri() . '/style.css' );
 	wp_enqueue_style( 'generatepress-child-style',
 		get_stylesheet_directory_uri() . '/style.css',
@@ -26,25 +19,11 @@ function adamant_parent_theme_enqueue_styles() {
 	);
 }
 
-
-/**
- * Custom logo on login page (login.php) – uses a logo set in theme customizer
- */
-add_action( 'login_enqueue_scripts', 'adamant_login_logo' );
-function adamant_login_logo() { ?>
-    <style type="text/css">
-        body.login h1 a {
-            background-image: url(<?php echo esc_url( wp_get_attachment_url( get_theme_mod( 'custom_logo' ) ) ); ?>);
-        }
-    </style>
-<?php }
-
-
 /**
  * Custom logo link on login page (login.php)
  */
-add_filter( 'login_headerurl', 'adamant_loginlogo_url' );
-function adamant_loginlogo_url($url)
+add_filter( 'login_headerurl', 'webartisan_loginlogo_url' );
+function webartisan_loginlogo_url($url)
 {
   return home_url();
 }
@@ -53,8 +32,8 @@ function adamant_loginlogo_url($url)
 /**
  * Configure WordPress to use SMTP for sending emails
  */
-add_action( 'phpmailer_init', 'adamant_mailer' );
-function adamant_mailer( $phpmailer ) {
+add_action( 'phpmailer_init', 'webartisan_mailer' );
+function webartisan_mailer( $phpmailer ) {
     if ( ! defined( 'SMTP_HOST' ) || empty( SMTP_HOST ) ) {
         return;
     }
@@ -81,8 +60,8 @@ function adamant_mailer( $phpmailer ) {
 /**
  * Set the From email address
  */
-add_filter( 'wp_mail_from', 'adamant_mail_from' );
-function adamant_mail_from( $from ) {
+add_filter( 'wp_mail_from', 'webartisan_mail_from' );
+function webartisan_mail_from( $from ) {
     if ( defined( 'SMTP_FROM' ) && SMTP_FROM ) {
         return SMTP_FROM;
     }
@@ -92,8 +71,8 @@ function adamant_mail_from( $from ) {
 /**
  * Set the From name
  */
-add_filter( 'wp_mail_from_name', 'adamant_mail_from_name' );
-function adamant_mail_from_name( $name ) {
+add_filter( 'wp_mail_from_name', 'webartisan_mail_from_name' );
+function webartisan_mail_from_name( $name ) {
     if ( defined( 'SMTP_NAME' ) && SMTP_NAME ) {
         return SMTP_NAME;
     }
@@ -104,8 +83,8 @@ function adamant_mail_from_name( $name ) {
 /**
  * Set GeneratePress to use latin-ext subset for Google Fonts
  */
-add_filter( 'generate_fonts_subset', 'adamant_set_latin_ext_fonts_subset' );
-function adamant_set_latin_ext_fonts_subset()
+add_filter( 'generate_fonts_subset', 'webartisan_set_latin_ext_fonts_subset' );
+function webartisan_set_latin_ext_fonts_subset()
 {
     return 'latin-ext';
 }
@@ -127,3 +106,5 @@ add_filter( 'pre_http_request', function( $pre, $args, $url ) {
 
     return $pre;
 }, 10, 3 );
+
+
